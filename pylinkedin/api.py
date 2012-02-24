@@ -13,9 +13,18 @@ class LinkedIn(object):
 
     def get_group_memberships(self):
         url = endpoints.GROUP_MEMBERSHIPS
+        return self._make_request(url)
+
+    def _make_request(self, uri, method='GET', body=None):
         headers = {'x-li-format': 'json'}
-        resp, content = self.client.request(url, headers=headers)
+        if method in ('POST', 'PUT'):
+            headers['Content-Type'] = 'application/json'
+        resp, content = self.client.request(uri, method=method,
+                headers=headers)
         if resp['status'] == '200':
             return json.loads(content)
         else:
-            raise LinkedInException('Could not fetch groups')
+            #TODO: more sophisticated error handling
+            raise LinkedInException('API call failed with status: %s' %
+                    resp['status'])
+
