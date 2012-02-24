@@ -1,0 +1,1 @@
+GROUP_MEMBERSHIPS = "https://api.linkedin.com/v1/people/~/group-memberships:(group:(id,name),membership-state,show-group-logo-in-profile,allow-messages-from-members,email-digest-frequency,email-announcements-from-managers,email-for-every-new-post)"
