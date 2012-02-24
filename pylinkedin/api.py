@@ -10,7 +10,7 @@ class LinkedIn(object):
         self.token = oauth.Token(oauth_token, oauth_secret)
         self.client = oauth.Client(self.consumer, self.token)
 
-    def get_groups(self):
+    def get_group_memberships(self):
         url = endpoints.GROUP_MEMBERSHIPS
         headers = {'x-li-format': 'json'}
         resp, content = self.client.request(url, headers=headers)
