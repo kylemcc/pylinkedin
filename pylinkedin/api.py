@@ -17,6 +17,7 @@ class LinkedIn(object):
         return self._make_request(url)
 
     def get_network_updates(self, update_type=None, before=None, after=None):
+        update_type = update_type or []
         if type(update_type) not in (list, basestring):
             raise TypeError('update_type must be a list or a string')
         if before:
