@@ -1,0 +1,2 @@
+class LinkedInException(Exception):
+    pass

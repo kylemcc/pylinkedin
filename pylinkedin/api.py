@@ -2,6 +2,7 @@ import json
 import oauth2 as oauth
 
 import endpoints
+from exceptions import LinkedInException
 
 class LinkedIn(object):
     def __init__(self, consumer_key=None, consumer_secret=None,
@@ -17,4 +18,4 @@ class LinkedIn(object):
         if resp['status'] == '200':
             return json.loads(content)
         else:
-            raise Exception('Could not fetch groups')
+            raise LinkedInException('Could not fetch groups')
