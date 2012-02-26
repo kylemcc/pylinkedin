@@ -33,6 +33,17 @@ class LinkedIn(object):
         url = build_url_with_qs(base, args)
         return self._make_request(url)
 
+    def like_post(self, post_id):
+        return self._like_unlike_post(post_id, True)
+
+    def unlike_post(self, post_id):
+        return self._like_unlike_post(post_id, False)
+
+    def _like_unlike_post(self, post_id, is_liked):
+        body = json.dumps(is_liked) #json true/false
+        url = endpoints.LIKE_POST.format(post_id=post_id)
+        return self._make_request(url, method='PUT', body=body)
+
     def get_network_updates(self, update_type=None, before=None, after=None):
         update_type = update_type or []
         if type(update_type) not in (list, basestring):
@@ -45,14 +56,18 @@ class LinkedIn(object):
         url = build_url_with_qs(endpoints.NETWORK_UPDATES, args)
         return self._make_request(url)
 
-    def _make_request(self, uri, method='GET', body=None):
+    def _make_request(self, uri, method='GET', body=''):
         headers = {'x-li-format': 'json'}
         if method in ('POST', 'PUT'):
             headers['Content-Type'] = 'application/json'
         resp, content = self.client.request(uri, method=method,
-                headers=headers)
+                headers=headers, body=body)
+        print resp
+        print content
         if resp['status'] == '200':
             return json.loads(content)
+        elif resp['status'] == '204':
+            return True
         else:
             #TODO: more sophisticated error handling
             raise LinkedInException('API call failed with status: %s' %
