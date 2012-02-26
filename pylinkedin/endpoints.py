@@ -12,7 +12,7 @@ CREATE_POST = BASE_API + "groups/{group_id}/posts"
 DELETE_POST = BASE_API + "posts/{post_id}"
 LIKE_POST = BASE_API + "posts/{post_id}/relation-to-viewer/is-liked"
 CREATE_COMMENT = BASE_API + "posts/{post_id}/comments"
-
+DELETE_COMMENT = BASE_API + "comments/{comment_id}"
 
 """
 Social Stream resources

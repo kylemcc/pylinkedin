@@ -49,6 +49,10 @@ class LinkedIn(object):
         url = endpoints.CREATE_COMMENT.format(post_id=post_id)
         return self._make_request(url, method='POST', body=body)
 
+    def delete_comment(self, comment_id):
+        url = endpoints.DELETE_COMMENT.format(comment_id=comment_id)
+        return self._make_request(url, method='DELETE')
+
     def like_post(self, post_id):
         return self._like_unlike_post(post_id, True)
 
