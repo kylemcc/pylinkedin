@@ -43,6 +43,12 @@ class LinkedIn(object):
         url = build_url_with_qs(base, args)
         return self._make_request(url)
 
+    def create_comment(self, post_id, text):
+        args = args_to_dict(text=text)
+        body = json.dumps(args)
+        url = endpoints.CREATE_COMMENT.format(post_id=post_id)
+        return self._make_request(url, method='POST', body=body)
+
     def like_post(self, post_id):
         return self._like_unlike_post(post_id, True)
 
