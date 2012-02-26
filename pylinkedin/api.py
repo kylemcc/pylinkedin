@@ -27,6 +27,12 @@ class LinkedIn(object):
         url = build_url_with_qs(base, args)
         return self._make_request(url)
 
+    def create_group_post(self, group_id, title, summary):
+        args = args_to_dict(title=title, summary=summary)
+        body = json.dumps(args)
+        url = endpoints.CREATE_POST.format(group_id=group_id)
+        return self._make_request(url, method='POST', body=body)
+
     def get_comments_for_post(self, post_id, count=10, start=0):
         args = args_to_dict(count=count, start=start)
         base = endpoints.POST_COMMENTS.format(post_id=post_id)
@@ -62,11 +68,9 @@ class LinkedIn(object):
             headers['Content-Type'] = 'application/json'
         resp, content = self.client.request(uri, method=method,
                 headers=headers, body=body)
-        print resp
-        print content
         if resp['status'] == '200':
             return json.loads(content)
-        elif resp['status'] == '204':
+        elif resp['status'] in ('201','204'):
             return True
         else:
             #TODO: more sophisticated error handling
