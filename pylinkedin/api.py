@@ -27,6 +27,12 @@ class LinkedIn(object):
         url = build_url_with_qs(base, args)
         return self._make_request(url)
 
+    def get_comments_for_post(self, post_id, count=10, start=0):
+        args = args_to_dict(count=count, start=start)
+        base = endpoints.POST_COMMENTS.format(post_id=post_id)
+        url = build_url_with_qs(base, args)
+        return self._make_request(url)
+
     def get_network_updates(self, update_type=None, before=None, after=None):
         update_type = update_type or []
         if type(update_type) not in (list, basestring):
