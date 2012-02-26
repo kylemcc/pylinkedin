@@ -16,6 +16,17 @@ class LinkedIn(object):
         url = endpoints.GROUP_MEMBERSHIPS
         return self._make_request(url)
 
+    def get_group_posts(self, group_id, start=0, count=10, order='recency',
+            role=None, modified_since=None):
+        if order not in ('recency','popularity'):
+            raise ValueError('Sort order must be either recency or popularity')
+        _args = {'modified-since': modified_since}
+        args = args_to_dict(start=start, count=count, order=order, role=role,
+                **_args)
+        base = endpoints.GROUP_FEED.format(group_id=group_id)
+        url = build_url_with_qs(base, args)
+        return self._make_request(url)
+
     def get_network_updates(self, update_type=None, before=None, after=None):
         update_type = update_type or []
         if type(update_type) not in (list, basestring):
