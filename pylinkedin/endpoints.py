@@ -9,6 +9,7 @@ GROUP_MEMBERSHIPS = BASE_API + "people/~/group-memberships:(group:(id,name,short
 GROUP_FEED = BASE_API + "groups/{group_id}/posts:(id,creation-timestamp,title,summary,creator:(id,first-name,last-name,picture-url,headline),likes,attachment:(image-url,content-domain,content-url,title,summary),relation-to-viewer)"
 POST_COMMENTS = BASE_API + "posts/{post_id}/comments:(creator:(id,first-name,last-name,picture-url),creation-timestamp,text,id,relation-to-viewer)"
 CREATE_POST = BASE_API + "groups/{group_id}/posts"
+DELETE_POST = BASE_API + "posts/{post_id}"
 LIKE_POST = BASE_API + "posts/{post_id}/relation-to-viewer/is-liked"
 
 

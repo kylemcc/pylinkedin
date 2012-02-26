@@ -33,6 +33,10 @@ class LinkedIn(object):
         url = endpoints.CREATE_POST.format(group_id=group_id)
         return self._make_request(url, method='POST', body=body)
 
+    def delete_group_post(self, post_id):
+        url = endpoints.DELETE_POST.format(post_id=post_id)
+        return self._make_request(url, method='DELETE')
+
     def get_comments_for_post(self, post_id, count=10, start=0):
         args = args_to_dict(count=count, start=start)
         base = endpoints.POST_COMMENTS.format(post_id=post_id)
