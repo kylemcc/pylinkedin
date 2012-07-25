@@ -2,7 +2,7 @@ import json
 import oauth2 as oauth
 
 import endpoints
-from exceptions import LinkedInException
+from .exceptions import LinkedInException
 from helpers import args_to_dict, build_url_with_qs, date_to_str
 
 class LinkedIn(object):
@@ -64,15 +64,17 @@ class LinkedIn(object):
         url = endpoints.LIKE_POST.format(post_id=post_id)
         return self._make_request(url, method='PUT', body=body)
 
-    def get_network_updates(self, update_type=None, before=None, after=None):
+    def get_network_updates(self, update_type=None, before=None, after=None,
+            count=10):
         update_type = update_type or []
-        if type(update_type) not in (list, basestring):
+        if not isinstance(update_type, (list, tuple, basestring)):
             raise TypeError('update_type must be a list or a string')
         if before:
             before = date_to_str(before)
         if after:
             after = date_to_str(after)
-        args = args_to_dict(type=update_type, before=before, after=after)
+        args = args_to_dict(type=update_type, before=before, after=after,
+                count=count)
         url = build_url_with_qs(endpoints.NETWORK_UPDATES, args)
         return self._make_request(url)
 
