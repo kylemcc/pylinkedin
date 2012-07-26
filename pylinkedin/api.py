@@ -65,7 +65,7 @@ class LinkedIn(object):
         return self._make_request(url, method='PUT', body=body)
 
     def get_network_updates(self, update_type=None, before=None, after=None,
-            count=10):
+            count=10, start=0):
         update_type = update_type or []
         if not isinstance(update_type, (list, tuple, basestring)):
             raise TypeError('update_type must be a list or a string')
@@ -74,7 +74,7 @@ class LinkedIn(object):
         if after:
             after = date_to_str(after)
         args = args_to_dict(type=update_type, before=before, after=after,
-                count=count)
+                count=count, start=start)
         url = build_url_with_qs(endpoints.NETWORK_UPDATES, args)
         return self._make_request(url)
 
