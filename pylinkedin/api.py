@@ -7,9 +7,9 @@ from helpers import args_to_dict, build_url_with_qs, date_to_str
 
 class LinkedIn(object):
     def __init__(self, consumer_key=None, consumer_secret=None,
-            oauth_key=None, oauth_secret=None):
+            oauth_token=None, oauth_secret=None):
         self.consumer = oauth.Consumer(consumer_key, consumer_secret)
-        self.token = oauth.Token(oauth_key, oauth_secret)
+        self.token = oauth.Token(oauth_token, oauth_secret)
         self.client = oauth.Client(self.consumer, self.token)
 
     def get_group_memberships(self):
