@@ -9,5 +9,5 @@ setup(
     description = 'Python library for interacting with the LinkedIn REST API',
     packages = find_packages(),
     license = 'MIT License',
-    install_requires = ['httplib2', 'oauth2', 'simplejson']
+    install_requires = ['httplib2', 'simplejson']
 )
