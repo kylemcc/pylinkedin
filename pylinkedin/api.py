@@ -4,7 +4,6 @@ import oauth2 as oauth
 import endpoints
 from .exceptions import LinkedInException
 from helpers import args_to_dict
-from helpers import build_selector_string
 from helpers import build_url_with_qs
 from helpers import date_to_str
 
