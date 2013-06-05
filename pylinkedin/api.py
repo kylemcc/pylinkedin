@@ -7,6 +7,8 @@ from helpers import args_to_dict
 from helpers import build_url_with_qs
 from helpers import date_to_str
 
+PROFILE_ARGS = ','.join(['first-name','last-name','id','picture-url','public-profile-url'])
+
 
 class LinkedIn(object):
     def __init__(self, consumer_key=None, consumer_secret=None,
@@ -83,9 +85,9 @@ class LinkedIn(object):
 
     def get_profile(self, member_id=None):
         if member_id is None:
-            url = "%s/~" % endpoints.PROFILE
+            url = "%s/~:(%s)" % (endpoints.PROFILE, PROFILE_ARGS)
         else:
-            url = "%s/id=%s" % (endpoints.PROFILE, member_id)
+            url = "%s/id=%s:(%s)" % (endpoints.PROFILE, member_id, PROFILE_ARGS)
         return self._make_request(url)
 
     def _make_request(self, uri, method='GET', body=''):
