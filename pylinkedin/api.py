@@ -3,11 +3,15 @@ import oauth2 as oauth
 
 import endpoints
 from .exceptions import LinkedInException
-from helpers import args_to_dict, build_url_with_qs, date_to_str
+from helpers import args_to_dict
+from helpers import build_selector_string
+from helpers import build_url_with_qs
+from helpers import date_to_str
+
 
 class LinkedIn(object):
     def __init__(self, consumer_key=None, consumer_secret=None,
-            oauth_token=None, oauth_secret=None):
+                 oauth_token=None, oauth_secret=None):
         self.consumer = oauth.Consumer(consumer_key, consumer_secret)
         self.token = oauth.Token(oauth_token, oauth_secret)
         self.client = oauth.Client(self.consumer, self.token)
@@ -17,12 +21,12 @@ class LinkedIn(object):
         return self._make_request(url)
 
     def get_group_posts(self, group_id, start=0, count=10, order='recency',
-            role=None, modified_since=None):
-        if order not in ('recency','popularity'):
+                        role=None, modified_since=None):
+        if order not in ('recency', 'popularity'):
             raise ValueError('Sort order must be either recency or popularity')
         _args = {'modified-since': modified_since}
         args = args_to_dict(start=start, count=count, order=order, role=role,
-                **_args)
+                            **_args)
         base = endpoints.GROUP_FEED.format(group_id=group_id)
         url = build_url_with_qs(base, args)
         return self._make_request(url)
@@ -65,7 +69,7 @@ class LinkedIn(object):
         return self._make_request(url, method='PUT', body=body)
 
     def get_network_updates(self, update_type=None, before=None, after=None,
-            count=10, start=0):
+                            count=10, start=0):
         update_type = update_type or []
         if not isinstance(update_type, (list, tuple, basestring)):
             raise TypeError('update_type must be a list or a string')
@@ -74,22 +78,30 @@ class LinkedIn(object):
         if after:
             after = date_to_str(after)
         args = args_to_dict(type=update_type, before=before, after=after,
-                count=count, start=start)
+                            count=count, start=start)
         url = build_url_with_qs(endpoints.NETWORK_UPDATES, args)
+        return self._make_request(url)
+
+    def get_profile(self, member_id=None):
+        if member_id is None:
+            url = "%s/~" % endpoints.PROFILE
+        else:
+            url = "%s/id=%s" % (endpoints.PROFILE, member_id)
         return self._make_request(url)
 
     def _make_request(self, uri, method='GET', body=''):
         headers = {'x-li-format': 'json'}
         if method in ('POST', 'PUT'):
             headers['Content-Type'] = 'application/json'
+
         resp, content = self.client.request(uri, method=method,
-                headers=headers, body=body)
+                                            headers=headers, body=body)
         if resp['status'] == '200':
             return json.loads(content)
-        elif resp['status'] in ('201','204'):
+        elif resp['status'] in ('201', '204'):
             return True
         else:
             #TODO: more sophisticated error handling
             raise LinkedInException('API call failed with status: %s' %
-                    resp['status'])
+                                    resp['status'])
 
